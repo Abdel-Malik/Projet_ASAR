@@ -19,7 +19,7 @@ def autoc(L):
             M[k,d+k]=r[d]
     # M_inverse est l'inverse de M
     M_inverse=linalg.inv(M)
-    # r2 est r privé de sa premiere valeur
+    # r2 est r privé de sa première valeur
     r2=array(r[1:])
     # coeff est un vecteur contenant les coefficients d'auto-régression
     coeff=M_inverse.dot(-r2)
