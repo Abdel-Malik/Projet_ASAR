@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 
 from math import *
+=======
+
+>>>>>>> origin/master
 from numpy import *
 # Autoc calcule les coefficients d'autocorellation des données extraites du fichier audio
 # L est la liste des données
