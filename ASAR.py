@@ -1,26 +1,23 @@
-# -*- coding: utf-8 -*-
-
-from math import *
 from numpy import *
 # Autoc calcule les coefficients d'autocorellation des données extraites du fichier audio
 # L est la liste des données
-# p est l'ordre du modèle auto regressif (ne prend en compte que
-# les n premieres valeurs de l'echantillon
+# p est l'ordre du modèle auto regressif
 def autoc(L,p):
-    L=L[:p+1]
     n=len(L)
     # r stocke les coefficients auto regressifs
     r=[]
-    for i in range(n):
+    for i in range(p+1):
         # Calcul des coefficients d'auto-correlation r(i)
         som=0
         for j in range(n-i):
             som+=L[j]*L[i+j]
         r.append(som)
     # M est la matrice d'auto-correlation liée aux données de L
-    M=zeros((n-1,n-1))
-    for d in range(len(r)):
-        for k in range(n-d-1):
+    
+    m=len(r)
+    M=zeros((m-1,m-1))
+    for d in range(m):
+        for k in range(m-d-1):
             M[d+k,k]=r[d]
             M[k,d+k]=r[d]
     # M_inverse est l'inverse de M
@@ -31,6 +28,3 @@ def autoc(L,p):
     coeff=M_inverse.dot(-r2)
     
     return coeff
-           
-    
-    
