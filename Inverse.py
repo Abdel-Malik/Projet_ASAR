@@ -16,7 +16,7 @@ def Echange_Ligne(M,lig1,lig2):
 ##    return N
 
 # Gauss_Inverse retourne l'inverse de la matrice M en utilisant
-# la méthode de Gauss-Jordan sur M augmentée de la matrice identité
+# la méthode de Gauss-Jordan sur M augmentee de la matrice identité
 def Gauss_Inverse(M):
     n=M.shape[0]
     # I est la matrice identité
