@@ -44,3 +44,5 @@ def Gauss_Inverse(M):
                     I[i:i+1]=I[i:i+1]-coeff2*I[Lpiv:Lpiv+1]
         
     return I
+
+	
