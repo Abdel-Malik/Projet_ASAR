@@ -1,14 +1,16 @@
-ï»¿function res = ToolboxMP()
-    res = autor([1,2,5,6,7],4);
+function res = ToolBoxMaison_ASAR()
+    %extractions du son ainsi que sa fréquence d'échantillonage
+    [y2,Fs] = audioread('3Bonjours2.wav');
+    %récupération d'un seul canal
+    yi = y2(:,1);
+    %récupération d'un ensemble de points
+    y = yi(10001:11000);
+    %Calcul des coefficients d'autoRégressions
+    p=13;
+    res = autor(y,p);
 end
 
-function res = Echange_Ligne(M,lig1,lig2)
-   t = M(lig1,:);
-   M(lig1,:) = M(lig2,:);
-   M(lig2,:) = t;
-   res = M;
-end
-
+%Méthode de Gauss
 function res = Gauss_Inverse(M)
     I = eye(length(M));
     for e = 1:length(M)
@@ -24,7 +26,9 @@ function res = Gauss_Inverse(M)
     res = I;
 end
 
-function res = toeplitzAutoc(c,r)
+
+%Création d'une matrice de Toeplitz symétrique en se servant du vecteur r
+function res = toeplitzAutoc(r)
     m=length(r);
     M = eye(m-1)*r(1);
     for d = 1:m
@@ -33,35 +37,37 @@ function res = toeplitzAutoc(c,r)
             M(k,d+k) = r(d+1);
         end
     end
-	res = M;
+    res = M;
 end
 
-function res = autoc(p,n)
-	r=[];
+
+
+function res = autoc(p,L)
+    n=length(L);
+    r=[];
     for i = 0:p
         % Calcul des coefficients d'auto-correlation r(i)
         som=0;
         for j = 1:n-i
-            disp(i+j);
             som = som + L(j)*L(i+j);
         end
         r = [r,som];
     end
-	res = r;
+    res = r;
 end
 
+
 function res = autor(L,p)
-    n=length(L);
     % r stocke les coefficients auto regressifs
-    r=autoc(p,n);
-    % M est la matrice d'auto-correlation liÃ©e aux donnÃ©es de L
-    M=toeplitzAutoc(c,r);
+    r=autoc(p,L);
+    % M est la matrice d'auto-correlation liée aux données de L
+    M=toeplitzAutoc(r);
     % M_inverse est l'inverse de M
     M_inverse=Gauss_Inverse(M);
-    % r2 est r privÃ© de sa premiere valeur
+    % r2 est r privé de sa premiere valeur
     r2= r(2:length(r));
     r2=r2';
-    % coeff est un vecteur contenant les coefficients d'auto-rÃ©gression
+    % coeff est un vecteur contenant les coefficients d'auto-régression
     coeff = M_inverse*(-r2);
     res = coeff;
 end
