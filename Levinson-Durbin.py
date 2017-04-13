@@ -24,32 +24,29 @@ def RecLevinsonDurbin(p,R):
     # Variables locales :
     # E est un vecteur d'inconnues
     # lambd est un nombre dans une combinaison lineaire
-    # somme est un nombre
     # Initialisation
-    A[0] = 1;
-    A[1] = -R[1] / R[0];
-    E[1] = R[0] + A[1] * R[1];
-    
-    # Recurrence
-    for k in range(1, p):
-        # Calcul de la somme de j = 0 a k des A[j] * R[k+1-j]
-        somme = 0;
-        for j in range(0,k):
-            somme = somme + A[j] * R[k+1-j];
+    Ak = zeros(p+1)
+    Ak[0] = 1;
+    Ek   = R[0]
+
+    # Recurtion de Levinson-Durbin 
+    for k in range(p):
         # calcul de lambda
-        lambd = -somme / E(k);
-        # calcul de A[k+1] = U[k+1] + lambda * V[k+1]
-        # U = [A,0]
-        # V contient les coefficients de U dans l'ordre inverse
-        for x in range(0,k):
-            U[x]   = A[x];
-            V[x+1] = A[k-x];
-        U[k+1] = 0;
-        V[0]   = A[1];
-        A[k+1] = U[k+1] + lambd * V[k+1]
-        # Mise a jours de E
-        E[k+1] = (1 - lambd**2) * E[k] # = E[k] + lambda * somme
-    return A;
+        lambd = 0
+        for j in range(k+1):
+            lambd -= Ak[j]*R[k+1-j]
+        lambd /= Ek
+        
+        # Mise a jour de Ak
+        for n in range(1+int((k+1)/2)):
+            temp = Ak[k+1-n]+lambd*Ak[n]
+            Ak[n]=Ak[n]+lambd*Ak[k+1-n]
+            Ak[k+1-n] = temp
+        
+        # Mise a jour de Ek
+        Ek *= 1-lambd*lambd
+    
+    return Ak
 
     
 # Application de l'algorithme de Levinson-Durbin pour le modele AR(p) a partir des donnes
