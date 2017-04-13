@@ -9,18 +9,25 @@ Created on Mon Apr 10 18:00:01 2017
 # Caclul du vecteur contenant les coefficients d'autocorrelation
 # Yn est le vecteur des donnes
 # R est un vecteur contenant les coefficitens d'autocorrelation
-# Complexite O(n)
-def coeffsAuto(Yn):
-    for i in range(0, len(Yn)-1):
-        R[i] = Yn[i] * Yn[i+1];
-    return R;
+# Complexite O(n*n)
+def coeffsAuto(Yn,p):
+    # r stocke les coefficients auto regressifs
+    n=len(Yn)
+    R=[]
+    for i in range(p+1):
+        # Calcul des coefficients d'auto-correlation r(i)
+        som=0
+        for j in range(n-i):
+            som+=Yn[j]*Yn[i+j]
+        R.append(som)
+    return R
 
 # Application de l'algorithme de Levinson-Durbin pour le modele AR(p) a partir des coefficients d'autocorrelation
 # Entrees : p est l'ordre du modele
 #           R est le vecteur des coefficients d'autocorellation
 # Sortie  : A est le vecteur contenant les coefficients du modele AR
 # Complexite : O(n^2)
-def RecLevinsonDurbin(p,R):
+def RecLevinsonDurbin(R,p):
     # Variables locales :
     # E est un vecteur d'inconnues
     # lambd est un nombre dans une combinaison lineaire
@@ -51,4 +58,4 @@ def RecLevinsonDurbin(p,R):
     
 # Application de l'algorithme de Levinson-Durbin pour le modele AR(p) a partir des donnes
 def LevinsonDurbin(Yn,p):
-    return RecLevinsonDurbin(p,coeffsAuto(Yn));
+    return RecLevinsonDurbin(coeffsAuto(Yn,p),p);
