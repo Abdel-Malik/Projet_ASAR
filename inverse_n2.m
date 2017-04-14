@@ -3,15 +3,15 @@
 % T = [1 2 3;2 1 2;3 2 1];
 %T = [3 4 5 8 9 27;4 3 4 5 8 9;5 4 3 4 5 8;8 5 4 3 4 5;9 8 5 4 3 5;27 9 8 5 4 3]
 function res = inverse_n2()
-   T = [3 4 5 8 9 27;4 3 4 5 8 9;5 4 3 4 5 8;8 5 4 3 4 5;9 8 5 4 3  4;27 9 8 5 4 3]
+T = [6 8 7 4 1 38;8 6 8 7 4 1;7 8 6 8 7 4;4 7 8 6 8 7;1 4 7 8 6 8;38 1 4 7 8 6]
     inv(T)
-    [a,u,v]=Calcule(T);
-    inv_n2(a,u,v);
+    inv_n2(T)
     
 end
-%Parametre T : une matrice carré
-%Parametre n : indice de 1 à length(T)
-%Spécification : renvoie un vecteur ligne de la premiere ligne de la matrice privé du premier élément T(1,1)
+
+%Parametre T : une matrice carrÃ©
+%Parametre n : indice de 1 Ã  length(T)
+%SpÃ©cification : renvoie un vecteur ligne de la premiere ligne de la matrice privÃ© du premier Ã©lÃ©ment T(1,1)
 function y = s(T,n)
     S = zeros(1,n);
     for i=1:n
@@ -19,9 +19,9 @@ function y = s(T,n)
     end
     y=S;
 end
-%Parametre T : une matrice carré
-%Parametre n : indice de 1 à length(T)
-%Spécification : renvoie un vecteur colonne de la premiere colonne de la matrice privé du premier élément T(1,1)
+%Parametre T : une matrice carrÃ©
+%Parametre n : indice de 1 Ã  length(T)
+%SpÃ©cification : renvoie un vecteur colonne de la premiere colonne de la matrice privÃ© du premier Ã©lÃ©ment T(1,1)
 function y=r(T,n)
     S = zeros(n,1);
     for i=1:n
@@ -30,7 +30,7 @@ function y=r(T,n)
     y=S;
 end
 %Parametre v : un vecteur 
-%Spécification : renvoie un vecteur ligne correspondant au vecteur tel que v(i) se place a l'indice n-i du nouveau vecteur.
+%SpÃ©cification : renvoie un vecteur ligne correspondant au vecteur tel que v(i) se place a l'indice n-i du nouveau vecteur.
 function y=retourne(v)
     n=length(v);
     S = zeros(1,n);
@@ -39,8 +39,8 @@ function y=retourne(v)
     end
     y=S;
 end
-%Parametre T : une matrice de Toeplit symétrique.
-%Spécification : renvoie un réel : alpha, le vecteur colonne : u, le vecteur colonne : v  itérativement.
+%Parametre T : une matrice de Toeplit symÃ©trique.
+%SpÃ©cification : renvoie un rÃ©el : alpha, le vecteur colonne : u, le vecteur colonne : v  itÃ©rativement.
 function[alpha,u,v]=Calcule(T)
 
     %Initialisation
@@ -58,7 +58,7 @@ function[alpha,u,v]=Calcule(T)
     Ui{i}=ui;
     Ai{i}=alphai;
 
-    %itération
+    %itÃ©ration
    for i=2:(length(T(1,:))-1)
    %Calcule de v(i)
        r1 = s(T,i);
@@ -68,12 +68,12 @@ function[alpha,u,v]=Calcule(T)
        r1 = r(T,i);       
        ri = r1(i);
        ui = [Ui{i-1};0] - (ri + ui'*(retourne(r(T,i-1)))')/alphai * [(retourne(Vi{i-1}))';1];
-            %Ajoute à la liste les nouveaux v(i+1) et u(i+1)
+            %Ajoute Ã  la liste les nouveaux v(i+1) et u(i+1)
        Vi{i}=vi;
        Ui{i}=ui;
             %Calcule de alpha(i)
        alphai = r0 + Vi{i}'*r(T,i);        
-            %Ajoute à la liste du nouveau alpha(i+1) 
+            %Ajoute Ã  la liste du nouveau alpha(i+1) 
        Ai{i}=alphai;
 
 
@@ -84,7 +84,7 @@ function[alpha,u,v]=Calcule(T)
     v=Vi{i};
 end
 
-function y=inv_n2(alpha,u,v)
+function y=inve_n2(alpha,u,v)
     n=length(u)+1;
     S=zeros(n,n);
     S(1,1)=1/alpha;
@@ -97,6 +97,10 @@ function y=inv_n2(alpha,u,v)
         end
     end
     
-    y=S
+    y=S;
 end
 
+function y=inv_n2(T)
+    [alpha,u,v]=Calcule(T);
+    y=inve_n2(alpha,u,v);
+end
